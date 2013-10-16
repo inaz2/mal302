@@ -54,10 +54,7 @@ def visitors(str_id):
             return abort(404)
         cur.execute("SELECT created, remote_addr, remote_host, user_agent, referrer FROM visitors WHERE url_id = %s ORDER BY id", (url_id,))
         visitors = cur.fetchall()
-        if visitors:
-            return render_template('visitors.html', url=url, visitors=visitors)
-        else:
-            return abort(404)
+        return render_template('visitors.html', str_id=str_id, url=url, visitors=visitors)
     finally:
         cur.close()
 

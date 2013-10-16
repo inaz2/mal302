@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <title>mal302</title>
 <h1>{{ url }}</h1>
+<p>The created url is <code>{{ url_for('forward', str_id=str_id, _external=True) }}</code>.</p>
+{% if visitors %}
 <table>
 <tr>
   <th>Visited time</th>
@@ -17,4 +19,4 @@
 </tr>
 {% endfor %}
 </table>
-
+{% endif %}
