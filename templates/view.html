@@ -1,0 +1,7 @@
+<!DOCTYPE html>
+<title>{{ url }}</title>
+{% for visitor in visitors %}
+{% for item in visitor %}
+<p>{{ item }}</p>
+{% endfor %}
+{% endfor %}

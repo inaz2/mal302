@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<title>mal302</title>
+<h1>{{ url }}</h1>
+<table>
+<tr>
+  <th>Visited time</th>
+  <th>REMOTE_ADDR</th>
+  <th>REMOTE_HOST</th>
+  <th>USER_AGENT</th>
+  <th>REFERRER</th>
+</tr>
+{% for visitor in visitors %}
+<tr>
+{% for item in visitor %}
+<td>{{ item }}</td>
+{% endfor %}
+</tr>
+{% endfor %}
+</table>
+
