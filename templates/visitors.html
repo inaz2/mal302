@@ -8,15 +8,18 @@
   <th>Visited time</th>
   <th>REMOTE_ADDR</th>
   <th>REMOTE_HOST</th>
-  <th>USER_AGENT</th>
-  <th>ACCEPT_LANGUAGE</th>
-  <th>REFERRER</th>
+  <th>User-Agent</th>
+  <th>Accept-Language</th>
+  <th>Referrer</th>
 </tr>
 {% for visitor in visitors %}
 <tr>
-{% for item in visitor %}
-<td>{{ item }}</td>
-{% endfor %}
+  <td>{{ visitor['created'] }}</td>
+  <td>{{ visitor['remote_addr'] }}</td>
+  <td>{{ visitor['remote_host'] }}</td>
+  <td>{{ visitor['user_agent'] }}</td>
+  <td>{{ visitor['accept_language'] }}</td>
+  <td>{{ visitor['referrer'] }}</td>
 </tr>
 {% endfor %}
 </table>
