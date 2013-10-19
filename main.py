@@ -29,8 +29,9 @@ def forward(str_id):
     try:
         cur = conn.cursor()
         cur.execute("SELECT url FROM urls WHERE id = %s LIMIT 1", (url_id,))
-        url = cur.fetchone().get('url')
-        if url:
+        result = cur.fetchone()
+        if result:
+            url = result['url']
             remote_addr = request.environ.get('HTTP_X_FORWARDED_FOR') or request.environ.get('REMOTE_ADDR')
             remote_host = socket.gethostbyaddr(remote_addr)[0] if remote_addr else None
             cur.execute("INSERT INTO visitors (url_id, remote_addr, remote_host, user_agent, accept_language, referrer) VALUES (%s, %s, %s, %s, %s, %s)",
@@ -48,8 +49,10 @@ def visitors(str_id):
     try:
         cur = conn.cursor()
         cur.execute("SELECT url FROM urls WHERE id = %s LIMIT 1", (url_id,))
-        url = cur.fetchone().get('url')
-        if not url:
+        result = cur.fetchone()
+        if result:
+            url = result['url']
+        else:
             return abort(404)
         cur.execute("SELECT * FROM visitors WHERE url_id = %s ORDER BY id", (url_id,))
         visitors = cur.fetchall()
@@ -63,10 +66,15 @@ def create():
     try:
         cur = conn.cursor()
         cur.execute("INSERT INTO urls (url) VALUES (%s) RETURNING id", (url,))
-        url_id = cur.fetchone().get('id')
-        conn.commit()
-        str_id = base36encode(url_id)
-        return redirect(url_for('visitors', str_id=str_id))
+        result = cur.fetchone()
+        if result:
+            url_id = result['id']
+            conn.commit()
+            str_id = base36encode(url_id)
+            return redirect(url_for('visitors', str_id=str_id))
+        else:
+            conn.rollback()
+            return abort(500)
     finally:
         cur.close()
 
